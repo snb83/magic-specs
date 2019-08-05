@@ -15,5 +15,8 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet build --configuration $(buildConfiguration)
+- script: dotnet build src/Magic.Specs/Magic.Specs.csproj --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
+
+- script: tests\Magic.Spec.Tests\Magic.Spec.Tests.csproj --configuration $(buildConfiguration)
+  displayName: 'dotnet test $(buildConfiguration)'
