@@ -1,0 +1,7 @@
+.vs/
+_ReSharper.Caches/
+src/**/bin/
+src/**/obj/
+tests/**/bin/
+tests/**/obj/
+*.user
