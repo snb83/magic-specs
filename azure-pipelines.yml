@@ -51,5 +51,10 @@ steps:
   condition: and(succeeded(), eq(variables['publishNuget'], true))
   inputs:
     command: push
-    nuGetFeedType: external
-    publishFeedCredentials: 'github-connection'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+    #nuGetFeedType: 'external'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: '1d84f180-3f51-42f4-aba3-0e9127dda48d'
+    #publishFeedCredentials: 'github-connection'
+
+#nuget.exe push -Source "PreviewFeed" -ApiKey AzureDevOps my_package.nupkg
