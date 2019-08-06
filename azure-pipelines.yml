@@ -4,6 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
+
 - master
 
 pool:
@@ -13,10 +14,44 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  publishNuget: false
 
 steps:
-- script: dotnet build src/Magic.Specs/Magic.Specs.csproj --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+- task: DotNetCoreCLI@2
+  displayName: 'Build'
+  inputs:
+    command: 'build'
+    projects: 'src/Magic.Specs/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
 
-- script: tests\Magic.Spec.Tests\Magic.Spec.Tests.csproj --configuration $(buildConfiguration)
-  displayName: 'dotnet test $(buildConfiguration)'
+- task: DotNetCoreCLI@2
+  displayName: 'Test'
+  inputs:
+    command: 'test'
+    projects: 'tests/**/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publish'
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: 'src/Magic.Specs/*.csproj'
+    arguments: '--configuration $(buildConfiguration) --output $(build.artifactstagingdirectory)'
+    zipAfterPublish: true
+
+- task: DotNetCoreCLI@2
+  displayName: 'Pack'
+  condition: and(succeeded(), eq(variables['publishNuget'], true))
+  inputs:
+    command: pack
+    packagesToPack: 'src/Magic.Specs/*.csproj'
+    nobuild: true
+
+- task: DotNetCoreCLI@2
+  displayName: 'Push'
+  condition: and(succeeded(), eq(variables['publishNuget'], true))
+  inputs:
+    command: push
+    nuGetFeedType: external
+    publishFeedCredentials: 'github-connection'
