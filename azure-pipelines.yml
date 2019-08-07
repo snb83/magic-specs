@@ -64,23 +64,30 @@ steps:
     arguments: '--configuration $(buildConfiguration) --output $(build.artifactstagingdirectory)'
     zipAfterPublish: true
 
+
 - task: DotNetCoreCLI@2
-  displayName: 'Pack'
-  condition: and(succeeded(), eq(variables['publishNuget'], true))
+  displayName: 'Create Nuget packages (dotnet pack)'
+  condition: and(succeeded(), or(eq(variables['publishNugetToDevops'], true),variables['publishNugetToNugetOrg'], true)))
   inputs:
     command: pack
     packagesToPack: 'src/Magic.Specs/*.csproj'
     nobuild: true
 
 - task: DotNetCoreCLI@2
-  displayName: 'Push'
-  condition: and(succeeded(), eq(variables['publishNuget'], true))
+  displayName: 'Push Nuget packages to Devops'
+  condition: and(succeeded(), eq(variables['publishNugetToDevops'], true))
   inputs:
     command: push
     packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
-    #nuGetFeedType: 'external'
     nuGetFeedType: 'internal'
     publishVstsFeed: '1d84f180-3f51-42f4-aba3-0e9127dda48d'
-    #publishFeedCredentials: 'github-connection'
-
 #nuget.exe push -Source "PreviewFeed" -ApiKey AzureDevOps my_package.nupkg
+
+- task: DotNetCoreCLI@2
+  displayName: 'Push Nuget packages to nuget.org'
+  condition: and(succeeded(), eq(variables['publishNugetToNugetOrg'], true))
+  inputs:
+    command: push
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+    nuGetFeedType: 'external'
+    publishVstsFeed: '1d84f180-3f51-42f4-aba3-0e9127dda48d'
