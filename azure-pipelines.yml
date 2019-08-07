@@ -67,7 +67,7 @@ steps:
 
 - task: DotNetCoreCLI@2
   displayName: 'Create Nuget packages (dotnet pack)'
-  condition: and(succeeded(), or(eq(variables['publishNugetToDevops'], true),variables['publishNugetToNugetOrg'], true)))
+  condition: and(succeeded(), or(eq(variables['publishNugetToDevops'], true), eq(variables['publishNugetToNugetOrg'], true)))
   inputs:
     command: pack
     packagesToPack: 'src/Magic.Specs/*.csproj'
