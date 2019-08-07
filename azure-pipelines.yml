@@ -39,9 +39,8 @@ steps:
 - task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
   displayName: ReportGenerator
   inputs:
-    reports: '$(Build.SourceDirectory)\TestResults\Coverage\coverage.cobertura.xml'
-    targetdir: '$(Build.SourceDirectory)\coveragereport'
-
+    reports: '$(Build.SourcesDirectory)\TestResults\Coverage\coverage.cobertura.xml'
+    targetdir: '$(Build.SourcesDirectory)\coveragereport'
 
 - task: DotNetCoreCLI@2
   displayName: 'Publish'
