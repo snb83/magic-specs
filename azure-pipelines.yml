@@ -15,6 +15,13 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- task: PowerShell@2
+  displayName: 'Patch versions of projects'
+  inputs:
+    targetType: filePath
+    filePath: ./ver/UpdateVersions.ps1
+    arguments: '-useEnvBuild'
+
 - task: DotNetCoreCLI@2
   displayName: 'Build'
   inputs:
