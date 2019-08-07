@@ -1,4 +1,5 @@
 # magic-specs
 Simple implementation of specification pattern in .NET
 
-[![Build Status](https://snb83.visualstudio.com/magic-specs/_apis/build/status/snb83.magic-specs?branchName=master)](https://snb83.visualstudio.com/magic-specs/_build/latest?definitionId=6&branchName=master)
+![Azure DevOps builds (branch)](https://img.shields.io/azure-devops/build/snb83/c253d3df-e3a2-4c13-9f8a-b51db38d04b3/6/master)
+![Azure DevOps tests (branch)](https://img.shields.io/azure-devops/tests/snb83/c253d3df-e3a2-4c13-9f8a-b51db38d04b3/6/master)
